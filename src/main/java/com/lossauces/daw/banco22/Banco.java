@@ -6,6 +6,7 @@
 package com.lossauces.daw.banco22;
 
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  *
@@ -17,6 +18,7 @@ public class Banco {
 
     public Banco(String nombre) {
         this.nombre = nombre;
+        cuentas = new LinkedList<>();
     }
 
     public String getNombre() {
