@@ -5,6 +5,7 @@
  */
 package com.lossauces.daw.banco22;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public class Banco {
 
     public Banco(String nombre) {
         this.nombre = nombre;
+        cuentas = new ArrayList<>();
     }
 
     public String getNombre() {
