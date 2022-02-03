@@ -5,20 +5,25 @@
  */
 package com.lossauces.daw.banco22;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.LinkedList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
  *
  * @author daw1
  */
 public class Banco {
+
     private String nombre;
-    private List<Cuenta> cuentas;
+    private Set<Cuenta> cuentas;
 
     public Banco(String nombre) {
         this.nombre = nombre;
-        cuentas = new LinkedList<>();
+        cuentas = new HashSet<>();
     }
 
     public String getNombre() {
@@ -26,51 +31,42 @@ public class Banco {
     }
 
     public List<Cuenta> getCuentas() {
-        return cuentas;
+         return new ArrayList<>(cuentas);
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    public boolean abrirCuenta(String codigo, String titular, float saldo){
-        boolean salida=false;
-            
-        return salida;
-    }
-    
-    public boolean cancelarCuenta(String codigo){
-        boolean salida;
+
+    public boolean abrirCuenta(String codigo, String titular, float saldo) {
         
+    }
+
+    public boolean cancelarCuenta(String codigo) {
+        boolean salida;
+
         return false;
     }
-    
-    public float getTotalDeposito(){
+
+    public float getTotalDeposito() {
         return 0;
+
+    }
+
+    public Cuenta getCuenta(String codigo) {
+        Cuenta c = null;
         
-    }
-    
-    public Cuenta getCuenta(String codigo){
-        return null;
-    
-    }
-    
-    @Override
-    public String toString() {
-        return  nombre+","+cuentas;
-    }
- 
-    private int buscarCuenta(String codigo){
-        int posicion=-1;
-        for (int i = 0; i <cuentas.size(); i++) {
-            if (cuentas.get(i).getCodigo().equals(nombre)) {
-                posicion=i;
+        for (Cuenta c1 : cuentas) {
+            if (c1.getCodigo().equals(codigo)) {
+                c=c1;
             }
         }
-        
-        return posicion;
+        return c;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return nombre + "," + cuentas;
+    }
+
 }
