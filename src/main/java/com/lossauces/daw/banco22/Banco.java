@@ -39,7 +39,7 @@ public class Banco {
     }
 
     public boolean abrirCuenta(String codigo, String titular, float saldo) {
-        
+        return cuentas.add(new Cuenta(codigo, titular, saldo));
     }
 
     public boolean cancelarCuenta(String codigo) {

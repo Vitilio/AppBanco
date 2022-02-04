@@ -113,14 +113,22 @@ public class Cuenta {
             movimientos.add(new Movimiento(LocalDate.now(), 'I', cantidad, saldo));
         }
     }
-
+    /**
+     * Metodo que permite sacar dinero de la cuenta
+     * @param cantidad cantidad a retirar de la cuenta
+     */
     public void reintegrar(float cantidad) {
         if (cantidad > 0 && cantidad <= saldo) {
             saldo -= cantidad;
             movimientos.add(new Movimiento(LocalDate.now(), 'R', -cantidad, saldo));
         }
     }
-
+    /**
+     * 
+     * @param cantidad 
+     * @param destino 
+     * @
+     */
     public void realizarTransferencia(Cuenta destino, float cantidad) {
         if (cantidad > 0 && cantidad <= saldo) {
             saldo -= cantidad;
