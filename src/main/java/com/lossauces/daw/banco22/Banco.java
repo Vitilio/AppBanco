@@ -7,8 +7,8 @@ package com.lossauces.daw.banco22;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
@@ -17,86 +17,85 @@ import java.util.HashSet;
 public class Banco {
 
     private String nombre;
-    private Set<Cuenta> cuentas;
+    private Map<String, Cuenta> cuentas;
 
     public Banco(String nombre) {
         this.nombre = nombre;
-        cuentas = new HashSet<>();
+        cuentas = new HashMap<>();
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getNombre() {
         return nombre;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<Cuenta> getCuentas() {
-         return new ArrayList<>(cuentas);
+        return new ArrayList<>(cuentas.values());
     }
-    
+
     /**
-     * @param nombre 
-     * 
+     * @param nombre
+     *
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     /**
-     * @param codigo 
-     * @param saldo 
-     * @param titular 
-     * 
-     * @return 
+     * @param codigo
+     * @param saldo
+     * @param titular
+     *
+     * @return
      */
     public boolean abrirCuenta(String codigo, String titular, float saldo) {
-        return cuentas.add(new Cuenta(codigo, titular, saldo));
+        boolean salida=false;
+        if (!cuentas.containsKey(codigo)) {
+            cuentas.put(codigo, new Cuenta(codigo, titular, saldo));
+            salida = true;
+        }
+        return salida;
     }
-    
+
     /**
-     * @param codigo 
-     * 
-     * @return 
+     * @param codigo
+     *
+     * @return
      */
     public boolean cancelarCuenta(String codigo) {
-        boolean salida;
-
-        return false;
+        boolean salida = false;
+       
+        return salida;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public float getTotalDeposito() {
         return 0;
-        
+
     }
-    
+
     /**
-     * @param codigo 
-     * 
-     * @return 
+     * @param codigo
+     *
+     * @return
      */
     public Cuenta getCuenta(String codigo) {
-        Cuenta c = null;
-        for (Cuenta c1 : cuentas) {
-            if (c1.getCodigo().equals(codigo)) {
-                c=c1;
-            }
-        }
-        return c;
+        return cuentas.get(codigo);
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public String toString() {
