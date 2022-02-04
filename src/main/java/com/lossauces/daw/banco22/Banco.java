@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.ListIterator;
 
 /**
  *
@@ -25,37 +23,69 @@ public class Banco {
         this.nombre = nombre;
         cuentas = new HashSet<>();
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getNombre() {
         return nombre;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public List<Cuenta> getCuentas() {
          return new ArrayList<>(cuentas);
     }
-
+    
+    /**
+     * @param nombre 
+     * 
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
+    /**
+     * @param codigo 
+     * @param saldo 
+     * @param titular 
+     * 
+     * @return 
+     */
     public boolean abrirCuenta(String codigo, String titular, float saldo) {
         return cuentas.add(new Cuenta(codigo, titular, saldo));
     }
-
+    
+    /**
+     * @param codigo 
+     * 
+     * @return 
+     */
     public boolean cancelarCuenta(String codigo) {
         boolean salida;
 
         return false;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public float getTotalDeposito() {
         return 0;
-
+        
     }
-
+    
+    /**
+     * @param codigo 
+     * 
+     * @return 
+     */
     public Cuenta getCuenta(String codigo) {
         Cuenta c = null;
-        
         for (Cuenta c1 : cuentas) {
             if (c1.getCodigo().equals(codigo)) {
                 c=c1;
@@ -63,7 +93,11 @@ public class Banco {
         }
         return c;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String toString() {
         return nombre + "," + cuentas;
