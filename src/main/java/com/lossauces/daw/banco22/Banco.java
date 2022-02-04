@@ -15,12 +15,12 @@ import java.util.HashMap;
  * @author daw1
  */
 public class Banco {
-
     private String nombre;
     private Map<String, Cuenta> cuentas;
 
     public Banco(String nombre) {
         this.nombre = nombre;
+        cuentas = new HashMap<>();
     }
 
     /**
@@ -55,7 +55,7 @@ public class Banco {
      * @return
      */
     public boolean abrirCuenta(String codigo, String titular, float saldo) {
-        boolean salida=false;
+        boolean salida = false;
         if (!cuentas.containsKey(codigo)) {
             cuentas.put(codigo, new Cuenta(codigo, titular, saldo));
             salida = true;
@@ -70,7 +70,7 @@ public class Banco {
      */
     public boolean cancelarCuenta(String codigo) {
         boolean salida = false;
-       
+
         return salida;
     }
 
