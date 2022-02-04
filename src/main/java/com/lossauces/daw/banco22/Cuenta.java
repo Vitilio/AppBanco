@@ -21,7 +21,14 @@ public class Cuenta {
     private String titular;
     private float saldo;
     List<Movimiento> movimientos;
-
+    
+    /**
+     * 
+     * @param codigo 
+     * @param saldo 
+     * @param titular 
+     * 
+     */
     public Cuenta(String codigo, String titular, float saldo) {
         this.codigo = codigo;
         this.titular = titular;
@@ -31,15 +38,31 @@ public class Cuenta {
         movimientos = new ArrayList();
         movimientos.add(new Movimiento(LocalDate.now(), 'R', saldo, saldo));
     }
-
+    
+    /**
+     * 
+     * 
+     * @return 
+     */
     public String getCodigo() {
         return codigo;
     }
-
+    
+    /**
+     * 
+     * 
+     * @return 
+     */
     public List<Movimiento> getMovimientos() {
         return movimientos;
     }
-
+    
+    /**
+     * @param desde 
+     * @param hasta
+     * 
+     * @return 
+     */
     public List<Movimiento> getMovimientos(LocalDate desde, LocalDate hasta) {
         List<Movimiento> salida = new ArrayList<>();
         Iterator<Movimiento> iterador = movimientos.iterator();//
@@ -51,36 +74,65 @@ public class Cuenta {
         return null;
 
     }
-
+    
+    /**
+     * @param codigo 
+     * 
+     */
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
-
+    
+    /**
+     * @return 
+     * 
+     */
     public String getTitular() {
         return titular;
     }
-
+    
+    /**
+     * @param titular
+     * 
+     */
     public void setTitular(String titular) {
         this.titular = titular;
     }
-
+    
+    /**
+     * 
+     * 
+     * @return 
+     */
     public float getSaldo() {
         return saldo;
     }
-
+    
+    /**
+     * @param saldo 
+     * 
+     */
     public void setSaldo(float saldo) {
         if (saldo >= 0) {
             this.saldo = saldo;
         }
     }
-
+    
+    /**
+     * 
+     * 
+     */
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 37 * hash + Objects.hashCode(this.codigo);
         return hash;
     }
-
+    
+    /**
+     * 
+     * 
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -98,11 +150,16 @@ public class Cuenta {
         }
         return true;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String toString() {
         return codigo + "," + titular + "," + saldo;
     }
+   
     /**
      * Metodo que permite ingresar dinero en la cuenta
      * @param cantidad cantidad a ingresar en la cuenta
@@ -113,14 +170,23 @@ public class Cuenta {
             movimientos.add(new Movimiento(LocalDate.now(), 'I', cantidad, saldo));
         }
     }
-
+    
+    /**
+     * Metodo que permite sacar dinero de la cuenta
+     * @param cantidad cantidad a retirar de la cuenta
+     */
     public void reintegrar(float cantidad) {
         if (cantidad > 0 && cantidad <= saldo) {
             saldo -= cantidad;
             movimientos.add(new Movimiento(LocalDate.now(), 'R', -cantidad, saldo));
         }
     }
-
+    
+    /**
+     * @param destino 
+     * @param cantidad 
+     * 
+     */
     public void realizarTransferencia(Cuenta destino, float cantidad) {
         if (cantidad > 0 && cantidad <= saldo) {
             saldo -= cantidad;
@@ -129,7 +195,11 @@ public class Cuenta {
             destino.movimientos.add(new Movimiento(LocalDate.now(), 'T', cantidad, destino.saldo));
         }
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String listarMovimientos() {
         StringBuilder sb = new StringBuilder();
 
@@ -137,5 +207,9 @@ public class Cuenta {
             sb.append(m.toString()).append("\n");
         }
         return sb.toString();
+    }
+
+    public int compareTo(Cuenta o){
+        return this.codigo.compareTo(o.codigo);
     }
 }

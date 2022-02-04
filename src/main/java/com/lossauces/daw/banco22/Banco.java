@@ -7,70 +7,98 @@ package com.lossauces.daw.banco22;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
  * @author daw1
  */
 public class Banco {
+
     private String nombre;
-    private List<Cuenta> cuentas;
+    private Map<String, Cuenta> cuentas;
 
     public Banco(String nombre) {
         this.nombre = nombre;
-        cuentas = new ArrayList<>();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Cuenta> getCuentas() {
-        return cuentas;
+        return new ArrayList<>(cuentas.values());
     }
 
+    /**
+     * @param nombre
+     *
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    public boolean abrirCuenta(String codigo, String titular, float saldo){
+
+    /**
+     * @param codigo
+     * @param saldo
+     * @param titular
+     *
+     * @return
+     */
+    public boolean abrirCuenta(String codigo, String titular, float saldo) {
         boolean salida=false;
-            
+        if (!cuentas.containsKey(codigo)) {
+            cuentas.put(codigo, new Cuenta(codigo, titular, saldo));
+            salida = true;
+        }
         return salida;
     }
-    
-    public boolean cancelarCuenta(String codigo){
-        boolean salida;
-        
-        return false;
+
+    /**
+     * @param codigo
+     *
+     * @return
+     */
+    public boolean cancelarCuenta(String codigo) {
+        boolean salida = false;
+       
+        return salida;
     }
-    
-    public float getTotalDeposito(){
+
+    /**
+     *
+     * @return
+     */
+    public float getTotalDeposito() {
         return 0;
-        
+
     }
-    
-    public Cuenta getCuenta(String codigo){
-        return null;
-    
+
+    /**
+     * @param codigo
+     *
+     * @return
+     */
+    public Cuenta getCuenta(String codigo) {
+        return cuentas.get(codigo);
     }
-    
+
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
-        return  nombre+","+cuentas;
+        return nombre + "," + cuentas;
     }
- 
-    private int buscarCuenta(String codigo){
-        int posicion=-1;
-        for (int i = 0; i <cuentas.size(); i++) {
-            if (cuentas.get(i).getCodigo().equals(nombre)) {
-                posicion=i;
-            }
-        }
-        
-        return posicion;
-    }
-    
-    
-    
+
 }
