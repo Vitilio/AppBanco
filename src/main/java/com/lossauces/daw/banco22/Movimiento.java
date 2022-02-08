@@ -16,30 +16,51 @@ public class Movimiento {
     private char tipo;
     private float cantidad;
     private float saldo;
-
+/**
+ * Metodo que inicializa los objetos
+ * @param fecha
+ * @param tipo
+ * @param cantidad
+ * @param saldo 
+ */
     public Movimiento(LocalDate fecha, char tipo, float cantidad, float saldo) {
         this.fecha = fecha;
         this.tipo = tipo;
         this.cantidad = cantidad;
         this.saldo = saldo;
     }
-
+/**
+ * Devuelve la fecha en la que se realizo dicho movimiento
+ * @return 
+ */
     public LocalDate getFecha() {
         return fecha;
     }
-
+/**
+ * Devuelve el tipo de movimiento
+ * @return 
+ */
     public char getTipo() {
         return tipo;
     }
-
+/**
+ * Devuelve la cantidad de dinero 
+ * @return 
+ */
     public float getCantidad() {
         return cantidad;
     }
-
+/**
+ * Devuelve el saldo de la cuenta que realiza el movimiento
+ * @return 
+ */
     public float getSaldo() {
         return saldo;
     }
-
+/**
+ * Muestra los datos en forma de cadena de caracteres
+ * @return 
+ */
     @Override
     public String toString() {
         return fecha+","+tipo+","+cantidad+","+saldo;
