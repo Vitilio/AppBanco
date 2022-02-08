@@ -13,7 +13,7 @@ import java.time.LocalDate;
  */
 public class Movimiento {
     private LocalDate fecha;
-    private char tipo;
+    private TipoMovimiento tipo;
     private float cantidad;
     private float saldo;
 /**
@@ -23,7 +23,7 @@ public class Movimiento {
  * @param cantidad
  * @param saldo 
  */
-    public Movimiento(LocalDate fecha, char tipo, float cantidad, float saldo) {
+    public Movimiento(LocalDate fecha, TipoMovimiento tipo, float cantidad, float saldo) {
         this.fecha = fecha;
         this.tipo = tipo;
         this.cantidad = cantidad;
@@ -40,7 +40,7 @@ public class Movimiento {
  * Devuelve el tipo de movimiento
  * @return 
  */
-    public char getTipo() {
+    public TipoMovimiento getTipo() {
         return tipo;
     }
 /**

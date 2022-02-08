@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
+ * 
  * @author daw1
  */
 public class Cuenta {
@@ -24,9 +24,9 @@ public class Cuenta {
     
     /**
      * 
-     * @param codigo 
-     * @param saldo 
-     * @param titular 
+     * @param codigo serie de caracteres con los que identificar la cuenta
+     * @param saldo cantidad de capital almacenado en nuestra cuenta
+     * @param titular nombre del dueño de la cuenta
      * 
      */
     public Cuenta(String codigo, String titular, float saldo) {
@@ -36,12 +36,12 @@ public class Cuenta {
             this.saldo = saldo;
         }
         movimientos = new ArrayList();
-        movimientos.add(new Movimiento(LocalDate.now(), 'R', saldo, saldo));
+        movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.REINTEGRO, saldo, saldo));
     }
     
     /**
      * 
-     * 
+     * Devuelve el codigo de la cuenta
      * @return 
      */
     public String getCodigo() {
@@ -50,7 +50,7 @@ public class Cuenta {
     
     /**
      * 
-     * 
+     * Devuelve la lista de movimientos de la cuenta
      * @return 
      */
     public List<Movimiento> getMovimientos() {
@@ -58,8 +58,9 @@ public class Cuenta {
     }
     
     /**
-     * @param desde 
-     * @param hasta
+     * Muestra una lista de los movimientos efectuados durante un periodo de tiempo
+     * @param desde Fecha inicial
+     * @param hasta Fecha final
      * 
      * @return 
      */
@@ -76,7 +77,8 @@ public class Cuenta {
     }
     
     /**
-     * @param codigo 
+     * Permite modificar el codigo de una cuenta
+     * @param codigo serie de caracteres con los que identificar la cuenta
      * 
      */
     public void setCodigo(String codigo) {
@@ -84,15 +86,15 @@ public class Cuenta {
     }
     
     /**
+     * Devuelve el nombre del titular de la cuenta
      * @return 
-     * 
      */
     public String getTitular() {
         return titular;
     }
     
     /**
-     * @param titular
+     * @param titular nombre del dueño de la cuenta
      * 
      */
     public void setTitular(String titular) {
@@ -101,7 +103,7 @@ public class Cuenta {
     
     /**
      * 
-     * 
+     * Devuelve el saldo de nuestra cuenta
      * @return 
      */
     public float getSaldo() {
@@ -109,7 +111,8 @@ public class Cuenta {
     }
     
     /**
-     * @param saldo 
+     * Modifica el saldo de la cuenta
+     * @param saldo cantidad de capital almacenado en nuestra cuenta
      * 
      */
     public void setSaldo(float saldo) {
@@ -167,7 +170,7 @@ public class Cuenta {
     public void ingresar(float cantidad) {
         if (cantidad > 0) {
             saldo += cantidad;
-            movimientos.add(new Movimiento(LocalDate.now(), 'I', cantidad, saldo));
+            movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.INGRESO, cantidad, saldo));
         }
     }
     
@@ -178,21 +181,22 @@ public class Cuenta {
     public void reintegrar(float cantidad) {
         if (cantidad > 0 && cantidad <= saldo) {
             saldo -= cantidad;
-            movimientos.add(new Movimiento(LocalDate.now(), 'R', -cantidad, saldo));
+            movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.REINTEGRO, -cantidad, saldo));
         }
     }
     
     /**
-     * @param destino 
-     * @param cantidad 
+     * 
+     * @param destino cuenta receptora de la transferencia
+     * @param cantidad cantidad a enviar  
      * 
      */
     public void realizarTransferencia(Cuenta destino, float cantidad) {
         if (cantidad > 0 && cantidad <= saldo) {
             saldo -= cantidad;
             destino.saldo += cantidad;
-            movimientos.add(new Movimiento(LocalDate.now(), 'T', -cantidad, saldo));
-            destino.movimientos.add(new Movimiento(LocalDate.now(), 'T', cantidad, destino.saldo));
+            movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.TRANSFERENCIA, -cantidad, saldo));
+            destino.movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.TRANSFERENCIA, cantidad, destino.saldo));
         }
     }
     
@@ -208,7 +212,11 @@ public class Cuenta {
         }
         return sb.toString();
     }
-
+    /**
+     * Compara dos cuentas entre si
+     * @param o cuenta a comparar
+     * @return 
+     */
     public int compareTo(Cuenta o){
         return this.codigo.compareTo(o.codigo);
     }
