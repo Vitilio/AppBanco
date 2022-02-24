@@ -13,7 +13,7 @@ public class CuentaCredito extends Cuenta {
 
     private float limiteCredito;
 
-    public CuentaCredito(String codigo, String titular, float saldo) {
+    public CuentaCredito(String codigo, String titular, float saldo) throws SaldoException {
         super(codigo, titular, saldo);
     }
 
@@ -26,7 +26,7 @@ public class CuentaCredito extends Cuenta {
     }
 
     @Override
-    public void reintegrar(float cantidad) {
+    public void reintegrar(float cantidad) throws SaldoException {
         float nuevoSaldo;
         if (cantidad > 0) {
             nuevoSaldo = getSaldo() - cantidad;

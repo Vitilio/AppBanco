@@ -10,5 +10,5 @@ package com.lossauces.daw.banco22;
  * @author daw1
  */
 public enum TipoMovimiento {
-    INGRESO,REINTEGRO,TRANSFERENCIA
+    I,R,T
 }

@@ -15,7 +15,7 @@ import java.util.Objects;
  *
  * @author daw1
  */
-public class Cuenta {
+public class Cuenta{
 
     private String codigo;
     private String titular;
@@ -28,7 +28,7 @@ public class Cuenta {
      * @param saldo cantidad de capital almacenado en nuestra cuenta
      * @param titular nombre del dueño de la cuenta
      * @throws com.lossauces.daw.banco22.SaldoException
-     *  
+     *
      */
     public Cuenta(String codigo, String titular, float saldo) throws SaldoException {
         if (saldo < 0) {
@@ -123,6 +123,7 @@ public class Cuenta {
      * Modifica el saldo de la cuenta
      *
      * @param saldo cantidad de capital almacenado en nuestra cuenta
+     * @throws com.lossauces.daw.banco22.SaldoException
      *
      */
     public void setSaldo(float saldo) throws SaldoException {
@@ -182,37 +183,49 @@ public class Cuenta {
      * @param cantidad cantidad a ingresar en la cuenta
      */
     public void ingresar(float cantidad) {
-        if (cantidad > 0) {
-            saldo += cantidad;
-            movimientos.add(new Movimiento(LocalDate.now(), TipoMovimiento.INGRESO, cantidad, saldo));
+        if (cantidad < 0) {
+            throw new IllegalArgumentException("La cantidad a ingresar debe ser positiva");
         }
+        saldo += cantidad;
+        movimientos.add(new Movimiento(LocalDate.now(), TipoMovimiento.I, cantidad, saldo));
+
     }
 
     /**
      * Metodo que permite sacar dinero de la cuenta
      *
      * @param cantidad cantidad a retirar de la cuenta
+     * @throws com.lossauces.daw.banco22.SaldoException
      */
-    public void reintegrar(float cantidad) {
-        if (cantidad > 0 && cantidad <= saldo) {
-            saldo -= cantidad;
-            movimientos.add(new Movimiento(LocalDate.now(), TipoMovimiento.REINTEGRO, -cantidad, saldo));
+    public void reintegrar(float cantidad) throws SaldoException {
+        if (cantidad < 0) {
+            throw new IllegalArgumentException("La cantidad a retirar debe ser positiva");
         }
+        if (cantidad > saldo) {
+            throw new SaldoException("Error en el saldo");
+        }
+        saldo -= cantidad;
+        movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.R, -cantidad, saldo));
     }
+}
 
-    /**
-     *
-     * @param destino cuenta receptora de la transferencia
-     * @param cantidad cantidad a enviar
-     *
-     */
-    public void realizarTransferencia(Cuenta destino, float cantidad) {
-        if (cantidad > 0 && cantidad <= saldo) {
+/**
+ *
+ * @param destino cuenta receptora de la transferencia
+ * @param cantidad cantidad a enviar
+ *
+ */
+public void realizarTransferencia(Cuenta destino, float cantidad) throws SaldoException {
+         if (cantidad < 0) {
+            throw new IllegalArgumentException("La cantidad a retirar debe ser positiva");
+        }
+        if (cantidad > saldo) {
+            throw new SaldoException("Error en el saldo");
+        }
             saldo -= cantidad;
             destino.saldo += cantidad;
-            movimientos.add(new Movimiento(LocalDate.now(), TipoMovimiento.TRANSFERENCIA, -cantidad, saldo));
-            destino.movimientos.add(new Movimiento(LocalDate.now(), TipoMovimiento.TRANSFERENCIA, cantidad, destino.saldo));
-        }
+            movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.T, -cantidad, saldo));
+            destino.movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.T, cantidad, destino.saldo));
     }
 
     /**

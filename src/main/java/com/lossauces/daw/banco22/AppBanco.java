@@ -25,6 +25,7 @@ public class AppBanco {
         float saldo, cantidad;
         List<Cuenta> listado;
         Cuenta cuenta1, cuenta2;
+        boolean correcto;
 
         do {
             System.out.println("1.- Abrir cuenta");
@@ -59,31 +60,35 @@ public class AppBanco {
                     cuenta1 = banco.getCuenta(codigo);
                     if (cuenta1 != null) {
                         do {
-                            System.out.println("1.- Ingresar dinero");
-                            System.out.println("2.- Retirar dinero");
-                            System.out.println("3.- Consultar saldo");
-                            System.out.println("4.- Realizar transferencia");
-                            System.out.println("5.- Consultar movimientos");
-                            System.out.println("0.- Salir");
-                            System.out.println("Introduzca una opcion: ");
+                            correcto=true;
+                            try{
                             opcion2 = teclado.nextInt();
                             teclado.nextLine();
+                            }catch(InputMis)
                             switch (opcion2) {
                                 case 1:
                                     System.out.println("INGRESAR DINERO");
                                     System.out.println("Introduzca la cantidad que quiere introducir");
                                     cantidad = teclado.nextFloat();
                                     teclado.nextLine();
+                                    try{
                                     cuenta1.ingresar(cantidad);
                                     System.out.println(cuenta1.getSaldo());
+                                    }catch(IllegalArgumentException iae){
+                                        System.out.println(iae.getMessage());
+                                    }
                                     break;
                                 case 2:
                                     System.out.println("RETIRAR DINERO");
                                     System.out.println("Introduzca la cantidad a retirar");
                                     cantidad = teclado.nextFloat();
                                     teclado.nextLine();
+                                    try{
                                     cuenta1.reintegrar(cantidad);
                                     System.out.println(cuenta1.getSaldo());
+                                    }catch (SaldoException | IllegalArgumentException ex){
+                                        System.out.println(ex.getMessage());
+                                    }
                                     break;
                                 case 3:
                                     System.out.println("CONSULTAR SALDO");
