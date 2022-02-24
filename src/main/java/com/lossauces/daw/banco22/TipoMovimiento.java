@@ -10,5 +10,14 @@ package com.lossauces.daw.banco22;
  * @author daw1
  */
 public enum TipoMovimiento {
-    I,R,T
+    INGRESO("I"),REINTEGRO("R"),TRANSFERENCIA("T");
+    private final String codigo;
+    
+    private TipoMovimiento(String codigo){
+        this.codigo=codigo;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
 }

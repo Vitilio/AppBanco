@@ -5,6 +5,7 @@
  */
 package com.lossauces.daw.banco22;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -153,6 +154,6 @@ public class AppBanco {
                     System.out.println("Opcion Incorrecta");
             }
         } while (opcion != 0);
-
+          System.out.println("Hasta la proxima");
     }
 }

@@ -15,6 +15,7 @@ public class CuentaCredito extends Cuenta {
 
     public CuentaCredito(String codigo, String titular, float saldo) throws SaldoException {
         super(codigo, titular, saldo);
+        this.limiteCredito=limiteCredito;
     }
 
     public float getLimiteCredito() {
@@ -31,14 +32,19 @@ public class CuentaCredito extends Cuenta {
         if (cantidad > 0) {
             nuevoSaldo = getSaldo() - cantidad;
             if (nuevoSaldo >= limiteCredito) {
+                try{
                 setSaldo(nuevoSaldo);
+                }catch(SaldoException ex){
+                    System.out.println("No se ha podido hacer el reintegro.");
+                }
             }
         }
     }
 
     @Override
     public String toString() {
-        return super.toString()+","+limiteCredito;    }
+        return super.toString()+","+limiteCredito;    
+    }
     
     
 }

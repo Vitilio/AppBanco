@@ -54,8 +54,9 @@ public class Banco {
      * @param titular
      *
      * @return
+     * @throws com.lossauces.daw.banco22.SaldoException
      */
-    public boolean abrirCuenta(String codigo, String titular, float saldo) {
+    public boolean abrirCuenta(String codigo, String titular, float saldo) throws SaldoException {
         boolean salida=false;
         if (!cuentas.containsKey(codigo)) {
             cuentas.put(codigo, new Cuenta(codigo, titular, saldo));
@@ -71,7 +72,9 @@ public class Banco {
      */
     public boolean cancelarCuenta(String codigo) {
         boolean salida = false;
-       
+        if (cuentas.remove(codigo) != null) {
+            salida=true;
+        }
         return salida;
     }
 
@@ -80,7 +83,11 @@ public class Banco {
      * @return
      */
     public float getTotalDeposito() {
-        return 0;
+        float acum = 0;
+        for (Cuenta c : cuentas.values()) {
+            acum += c.getSaldo();
+        }
+        return acum;
 
     }
 

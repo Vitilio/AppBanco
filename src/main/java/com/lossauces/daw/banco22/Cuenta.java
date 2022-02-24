@@ -15,12 +15,12 @@ import java.util.Objects;
  *
  * @author daw1
  */
-public class Cuenta{
+public class Cuenta implements Comparable<Cuenta>{
 
     private String codigo;
     private String titular;
     private float saldo;
-    List<Movimiento> movimientos;
+    private List<Movimiento> movimientos;
 
     /**
      *
@@ -31,14 +31,14 @@ public class Cuenta{
      *
      */
     public Cuenta(String codigo, String titular, float saldo) throws SaldoException {
+        this.codigo = codigo;
+        this.titular = titular;
         if (saldo < 0) {
             throw new SaldoException("Error en el saldo");
         }
-        this.codigo = codigo;
-        this.titular = titular;
         this.saldo = saldo;
         movimientos = new ArrayList();
-        movimientos.add(new Movimiento(LocalDate.now(), TipoMovimiento.REINTEGRO, saldo, saldo));
+        movimientos.add(new Movimiento(LocalDate.now(), TipoMovimiento.INGRESO, saldo, saldo));
     }
 
     /**
@@ -49,37 +49,6 @@ public class Cuenta{
      */
     public String getCodigo() {
         return codigo;
-    }
-
-    /**
-     *
-     * Devuelve la lista de movimientos de la cuenta
-     *
-     * @return
-     */
-    public List<Movimiento> getMovimientos() {
-        return movimientos;
-    }
-
-    /**
-     * Muestra una lista de los movimientos efectuados durante un periodo de
-     * tiempo
-     *
-     * @param desde Fecha inicial
-     * @param hasta Fecha final
-     *
-     * @return
-     */
-    public List<Movimiento> getMovimientos(LocalDate desde, LocalDate hasta) {
-        List<Movimiento> salida = new ArrayList<>();
-        Iterator<Movimiento> iterador = movimientos.iterator();//
-        Movimiento m;
-        while (iterador.hasNext()) {
-            Movimiento next = iterador.next();
-
-        }
-        return null;
-
     }
 
     /**
@@ -128,11 +97,48 @@ public class Cuenta{
      */
     public void setSaldo(float saldo) throws SaldoException {
         if (saldo < 0) {
-            throw new SaldoException("Error en el saldo");
+            throw new SaldoException("El saldo a introducir debe ser positivo");
         }
         if (saldo >= 0) {
             this.saldo = saldo;
         }
+    }
+
+    /**
+     *
+     * Devuelve la lista de movimientos de la cuenta
+     *
+     * @return
+     */
+    public List<Movimiento> getMovimientos() {
+        return movimientos;
+    }
+
+    /**
+     * Muestra una lista de los movimientos efectuados durante un periodo de
+     * tiempo
+     *
+     * @param desde Fecha inicial
+     * @param hasta Fecha final
+     *
+     * @return
+     */
+    public List<Movimiento> getMovimientos(LocalDate desde, LocalDate hasta) {
+        List<Movimiento> salida = new ArrayList<>();
+        Iterator<Movimiento> iterador = movimientos.iterator();//
+        Movimiento m;
+        while (iterador.hasNext()) {
+            m = iterador.next();
+            if (m.getFecha().isAfter(desde) && m.getFecha().isBefore(hasta)) {
+                salida.add(m);
+            }
+        }
+        return salida;
+
+    }
+
+    public void setMovimientos(List<Movimiento> movimientos) {
+        this.movimientos = movimientos;
     }
 
     /**
@@ -187,7 +193,7 @@ public class Cuenta{
             throw new IllegalArgumentException("La cantidad a ingresar debe ser positiva");
         }
         saldo += cantidad;
-        movimientos.add(new Movimiento(LocalDate.now(), TipoMovimiento.I, cantidad, saldo));
+        movimientos.add(new Movimiento(LocalDate.now(), TipoMovimiento.INGRESO, cantidad, saldo));
 
     }
 
@@ -202,10 +208,10 @@ public class Cuenta{
             throw new IllegalArgumentException("La cantidad a retirar debe ser positiva");
         }
         if (cantidad > saldo) {
-            throw new SaldoException("Error en el saldo");
+            throw new SaldoException("Saldo insuficiente");
         }
         saldo -= cantidad;
-        movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.R, -cantidad, saldo));
+        movimientos.add(new Movimiento(LocalDate.now(), TipoMovimiento.REINTEGRO, -cantidad, saldo));
     }
 }
 
@@ -216,16 +222,21 @@ public class Cuenta{
  *
  */
 public void realizarTransferencia(Cuenta destino, float cantidad) throws SaldoException {
-         if (cantidad < 0) {
+        if (cantidad < 0) {
             throw new IllegalArgumentException("La cantidad a retirar debe ser positiva");
         }
+
         if (cantidad > saldo) {
             throw new SaldoException("Error en el saldo");
         }
+
+        if(destino==null){
+            throw new NullPointerException("La cuenta elegida no existe");
+        }
             saldo -= cantidad;
             destino.saldo += cantidad;
-            movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.T, -cantidad, saldo));
-            destino.movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.T, cantidad, destino.saldo));
+            movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.TRANSFERENCIA, -cantidad, saldo));
+            destino.movimientos.add(new Movimiento(LocalDate.now(),TipoMovimiento.INGRESO, cantidad, destino.saldo));
     }
 
     /**
